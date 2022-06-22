@@ -8,7 +8,7 @@ import Interfaces.IntegerList;
 import java.util.Arrays;
 
 public class IntegerListImpl implements IntegerList {
-    private final Integer[] storage;
+    private Integer[] storage;
     private int size;
 
 //    public IntegerListImpl() {
@@ -22,7 +22,9 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public Integer add(Integer item) {
-        validateSize();
+        if (size == storage.length) {
+            storage = grow(storage);
+        }
         validateItem(item);
         storage[size++] = item;
         return item;
@@ -131,6 +133,10 @@ public class IntegerListImpl implements IntegerList {
         return Arrays.copyOf(storage, size);
     }
 
+    private static Integer[] grow(Integer[] integers) {
+        return Arrays.copyOf(integers, (int) (integers.length * 1.5));
+    }
+
     private void validateItem(Integer item) {
         if (item == null) {
             throw new ItemIsNullException();
@@ -149,28 +155,45 @@ public class IntegerListImpl implements IntegerList {
         }
     }
 
-    private static void sortInsertion(Integer[] arr) {
-        for (int i = 1; i < arr.length; i++) {
-            int temp = arr[i];
-            int j = i;
-            while (j > 0 && arr[j - 1] >= temp) {
-                arr[j] = arr[j - 1];
-                j--;
-            }
-            arr[j] = temp;
+    private static void quickSort(Integer[] arr, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(arr, begin, end);
+            quickSort(arr, begin, partitionIndex - 1);
+            quickSort(arr, partitionIndex + 1, end);
         }
     }
 
+    private static int partition(Integer[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swapElements(arr, i, j);
+            }
+        }
+        swapElements(arr, i + 1, end);
+        return i + 1;
+    }
+
+    private static void swapElements(Integer[] arr, int indexA, int indexB) {
+        int tmp = arr[indexA];
+        arr[indexA] = arr[indexB];
+        arr[indexB] = tmp;
+    }
+
     private boolean binarySearch(Integer item) {
-        sortInsertion(storage);
+        Integer[] storageWithoutNull = new Integer[size];
+        System.arraycopy(storage, 0, storageWithoutNull, 0, size);
+        quickSort(storageWithoutNull, 0, storageWithoutNull.length - 1);
         int min = 0;
-        int max = storage.length - 1;
+        int max = storageWithoutNull.length - 1;
         while (min <= max) {
             int mid = (min + max) / 2;
-            if (item.equals(storage[mid])) {
+            if (item.equals(storageWithoutNull[mid])) {
                 return true;
             }
-            if (item < storage[mid]) {
+            if (item < storageWithoutNull[mid]) {
                 max = mid - 1;
             } else {
                 min = mid + 1;

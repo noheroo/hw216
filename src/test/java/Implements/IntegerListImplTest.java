@@ -15,7 +15,18 @@ class IntegerListImplTest {
 
     @Test
     void addElementWithoutIndex() {
+        out.add(INTEGER3);
+        out.add(INTEGER4);
+        out.add(INTEGER);
+        out.add(INTEGER2);
+        out.add(INTEGER1);
+        out.add(INTEGER3);
+        out.add(INTEGER4);
+        out.add(INTEGER);
+        out.add(INTEGER2);
+        out.add(INTEGER1);
         assertEquals(out.add(INTEGER), INTEGER);
+
 
     }
 
@@ -46,19 +57,27 @@ class IntegerListImplTest {
     @Test
     void containsElementByItem() {
         out.add(INTEGER3);
-        out.add(INTEGER4);
         out.add(INTEGER);
-        out.add(INTEGER2);
-        out.add(INTEGER1);
-        assertEquals(out.contains(INTEGER1), TRUE);
+        out.add(INTEGER4);
+        out.add(INTEGER4);
+
+
+        assertEquals(out.contains(INTEGER), TRUE);
     }
 
     @Test
     void indexOf() {
         out.add(INTEGER);
         out.add(INTEGER1);
+        out.add(INTEGER);
+        out.add(INTEGER);
+        out.add(INTEGER);
+        out.add(INTEGER);
+        out.add(INTEGER);
+        out.add(INTEGER);
+        out.add(INTEGER1);
 
-        assertEquals(out.indexOf(INTEGER1),ONE);
+        assertEquals(out.indexOf(INTEGER1), ONE);
     }
 
     @Test
@@ -66,7 +85,7 @@ class IntegerListImplTest {
         out.add(INTEGER);
         out.add(INTEGER1);
 
-        assertEquals(out.indexOf(INTEGER1),ONE);
+        assertEquals(out.indexOf(INTEGER1), ONE);
     }
 
     @Test
@@ -82,12 +101,12 @@ class IntegerListImplTest {
         out.add(INTEGER);
         out.add(INTEGER1);
 
-        assertEquals(out.size(),TWO);
+        assertEquals(out.size(), TWO);
     }
 
     @Test
     void isEmpty() {
-        assertEquals(out.isEmpty(),TRUE);
+        assertEquals(out.isEmpty(), TRUE);
     }
 
     @Test
@@ -97,7 +116,7 @@ class IntegerListImplTest {
 
     @Test
     void BadIndexExceptionTest() {
-        assertThrows(BadIndexException.class, () -> out.add(MINUS_FIVE,INTEGER));
+        assertThrows(BadIndexException.class, () -> out.add(MINUS_FIVE, INTEGER));
     }
 
     @Test
@@ -107,6 +126,6 @@ class IntegerListImplTest {
         out.add(INTEGER);
         out.add(INTEGER2);
         out.add(INTEGER1);
-        assertThrows(ArrayIsFullException.class, () -> out.add(INTEGER));
+        assertThrows(ArrayIsFullException.class, () -> out.add(ONE,INTEGER));
     }
 }
